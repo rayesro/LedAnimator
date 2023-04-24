@@ -39,10 +39,9 @@ public class LedMatrixService
       _ledMatrix.Leds[x, 0].BlackOut();
   }
 
-  //// TODO Test this
   public void MoveToTheRigth()
   {
-    for (int x = _ledMatrix.MatrixWidth-2; x > 0; x--)
+    for (int x = _ledMatrix.MatrixWidth-1; x > 0; x--)
       for (int y = 0; y < _ledMatrix.MatrixHeight; y++)
         _ledMatrix.Leds[x, y].Color = _ledMatrix.Leds[x - 1, y].Color;
 
@@ -52,8 +51,6 @@ public class LedMatrixService
     for (int y = 0; y < _ledMatrix.MatrixHeight; y++)
       _ledMatrix.Leds[0, y].BlackOut();
   }
-
-  //// TODO Test this
 
   public void MoveToTheLeft()
   {
@@ -67,4 +64,30 @@ public class LedMatrixService
     for (int y = 0; y < _ledMatrix.MatrixHeight; y++)
       _ledMatrix.Leds[_ledMatrix.MatrixWidth-1, y].BlackOut();
   }
+
+  public void MoveUpLeft()
+  {
+    MoveUp();
+    MoveToTheLeft();
+  }
+
+  public void MoveUpRight()
+  {
+    MoveUp();
+    MoveToTheRigth();
+  }
+
+  public void MoveDownLeft()
+  {
+    MoveDown();
+    MoveToTheLeft();
+  }
+
+  public void MoveDownRight()
+  {
+    MoveDown();
+    MoveToTheRigth();
+  }
+
+
 }
