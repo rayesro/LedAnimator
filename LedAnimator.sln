@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedAnimator.Tests", "LedAnimator.Tests\LedAnimator.Tests.csproj", "{09D2AD08-37F0-404C-A8B2-B596D45A9A22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LedAnimator.Tests", "LedAnimator.Tests\LedAnimator.Tests.csproj", "{09D2AD08-37F0-404C-A8B2-B596D45A9A22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedAnimator.Domain", "LedAnimator.Domain\LedAnimator.Domain.csproj", "{78D32A56-2333-4E64-BAA0-02E3C3C25185}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LedAnimator.Core.Domain", "LedAnimator.Domain\LedAnimator.Core.Domain.csproj", "{78D32A56-2333-4E64-BAA0-02E3C3C25185}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedAnimator.Shared", "LedAnimator.Shared\LedAnimator.Shared.csproj", "{5312763C-F6DB-40FA-8456-09C8E3BB4A08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{78D32A56-2333-4E64-BAA0-02E3C3C25185}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78D32A56-2333-4E64-BAA0-02E3C3C25185}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78D32A56-2333-4E64-BAA0-02E3C3C25185}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5312763C-F6DB-40FA-8456-09C8E3BB4A08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5312763C-F6DB-40FA-8456-09C8E3BB4A08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5312763C-F6DB-40FA-8456-09C8E3BB4A08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5312763C-F6DB-40FA-8456-09C8E3BB4A08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

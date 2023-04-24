@@ -1,5 +1,6 @@
-﻿namespace LedAnimator.Domain.Exceptions;
+﻿namespace LedAnimator.Core.Domain.Exceptions;
 
 public class MismatchIndexArrayLengthException : Exception
 {
 }
+

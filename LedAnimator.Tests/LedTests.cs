@@ -1,4 +1,4 @@
-using LedAnimator.Domain.Entities;
+using LedAnimator.Core.Domain.Entities;
 
 namespace LedAnimator.Tests;
 

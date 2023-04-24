@@ -1,4 +1,4 @@
-﻿namespace LedAnimator.Domain.Exceptions;
+﻿namespace LedAnimator.Core.Domain.Exceptions;
 
 public class NullOrEmptyIndexArrayForLedMatrixException : Exception
 {
