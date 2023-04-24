@@ -1,96 +1,197 @@
 ﻿using LedAnimator.Core.Domain.Aggregates;
 using LedAnimator.Core.Domain.Services;
 using LedAnimator.Shared;
+using System.Xml.Serialization;
 
 namespace LedAnimator.Tests;
 
 public class LedMatrixServiceTests
 {
   [Test]
-  public void GivenA3by3Matrix_WhenMovingItUp_ThenLastTwoRowsMustBeTheSameAndFirstIndexMustNotBePresent()
+  public void GivenA3by3Matrix_WhenMovingItUpAndBlackingItOut_ThenLastRowMustBeBlackedOut()
   {
     var width = 3;
     var height = 3;
-    var indices = new int[,]
+    var initialColoredMatrix = new[,]
     {
-      { 1, 2, 3 },
-      { 4, 5, 6 },
-      { 7, 8, 9 },
+      { Colors.RED, Colors.GREEN, Colors.BLUE },
+      { Colors.RED, Colors.GREEN, Colors.BLUE },
+      { Colors.RED, Colors.GREEN, Colors.BLUE }
+    };
+
+    var expectedColoredMatrix = new[,]
+    {
+      { Colors.RED, Colors.GREEN, Colors.BLUE },
+      { Colors.RED, Colors.GREEN, Colors.BLUE },
+      { Colors.BLACK, Colors.BLACK, Colors.BLACK}
     };
 
     var matrix = new MatrixBoard(width, height);
-    matrix.AssignIndexToLeds(indices);
-
-    var service = new LedMatrixService(matrix);
-    service.MoveUp();
-
-    Assert.That(matrix.GetIndexByCoords(0, 1), Is.EqualTo(matrix.GetIndexByCoords(0, 2)));
-    Assert.That(matrix.GetIndexByCoords(1, 1), Is.EqualTo(matrix.GetIndexByCoords(1, 2)));
-    Assert.That(matrix.GetIndexByCoords(2, 1), Is.EqualTo(matrix.GetIndexByCoords(2, 2)));
-
-    Assert.That(matrix.GetIndexByCoords(0, 0), Is.Not.EqualTo(1));
-    Assert.That(matrix.GetIndexByCoords(0, 1), Is.Not.EqualTo(2));
-    Assert.That(matrix.GetIndexByCoords(0, 2), Is.Not.EqualTo(3));
-
-    Assert.That(matrix.GetIndexByCoords(0, 0), Is.EqualTo(4));
-    Assert.That(matrix.GetIndexByCoords(1, 0), Is.EqualTo(5));
-    Assert.That(matrix.GetIndexByCoords(2, 0), Is.EqualTo(6));
-  }
-
-  [Test]
-  public void GivenA3by3Matrix_WhenMovingItUpAndBlackingOutLastRow_ThenLastRowMustBeBlack()
-  {
-    var width = 3;
-    var height = 3;
-    var matrix = new MatrixBoard(width, height);
-
-    matrix[0, 0].Color = Colors.RED;
-    matrix[1, 0].Color = Colors.RED;
-    matrix[2, 0].Color = Colors.RED;
-
-    matrix[0, 1].Color = Colors.GREEN;
-    matrix[1, 1].Color = Colors.GREEN;
-    matrix[2, 1].Color = Colors.GREEN;
-
-    matrix[0, 2].Color = Colors.BLUE;
-    matrix[1, 2].Color = Colors.BLUE;
-    matrix[2, 2].Color = Colors.BLUE;
+    matrix.AssignColorsToLeds(initialColoredMatrix);
 
     var service = new LedMatrixService(matrix);
     service.BlackOutAfterMoving = true;
     service.MoveUp();
 
-    Assert.That(matrix.Leds[0, 2].Color, Is.EqualTo(Colors.BLACK));
-    Assert.That(matrix.Leds[1, 2].Color, Is.EqualTo(Colors.BLACK));
-    Assert.That(matrix.Leds[2, 2].Color, Is.EqualTo(Colors.BLACK));
+    for (var i = 0; i < width; i++)
+      for (var j = 0; j < height; j++)
+        Assert.That(matrix[j, i].Color, Is.EqualTo(expectedColoredMatrix[i, j]));
   }
-
   [Test]
-  public void GivenA3by3Matrix_WhenMovingItUpAndBlackingOutLastRowAndUsingACustomBlackoutColor_ThenLastRowMustTheCustomBlackoutColor()
+  public void GivenA3by3Matrix_WhenMovingItUpAndBlackingItOutWithCustomColor_ThenLastRowMustBeBlackedOut()
   {
     var width = 3;
     var height = 3;
-    var customColor = new RGBColor(126, 56, 78);
+    var initialColoredMatrix = new[,]
+    {
+      { Colors.RED, Colors.GREEN, Colors.BLUE },
+      { Colors.RED, Colors.GREEN, Colors.BLUE },
+      { Colors.RED, Colors.GREEN, Colors.BLUE }
+    };
+
+    var customColor = Colors.DARK_MAGENTA;
+
+    var expectedColoredMatrix = new[,]
+    {
+      { Colors.RED, Colors.GREEN, Colors.BLUE },
+      { Colors.RED, Colors.GREEN, Colors.BLUE },
+      { Colors.DARK_MAGENTA, Colors.DARK_MAGENTA, Colors.DARK_MAGENTA}
+    };
+
     var matrix = new MatrixBoard(width, height,customColor);
-
-    matrix[0, 0].Color = Colors.RED;
-    matrix[1, 0].Color = Colors.RED;
-    matrix[2, 0].Color = Colors.RED;
-
-    matrix[0, 1].Color = Colors.GREEN;
-    matrix[1, 1].Color = Colors.GREEN;
-    matrix[2, 1].Color = Colors.GREEN;
-
-    matrix[0, 2].Color = Colors.BLUE;
-    matrix[1, 2].Color = Colors.BLUE;
-    matrix[2, 2].Color = Colors.BLUE;
+    matrix.AssignColorsToLeds(initialColoredMatrix);
 
     var service = new LedMatrixService(matrix);
     service.BlackOutAfterMoving = true;
     service.MoveUp();
 
-    Assert.That(matrix.Leds[0, 2].Color, Is.EqualTo(customColor));
-    Assert.That(matrix.Leds[1, 2].Color, Is.EqualTo(customColor));
-    Assert.That(matrix.Leds[2, 2].Color, Is.EqualTo(customColor));
+    for (var i = 0; i < width; i++)
+      for (var j = 0; j < height; j++)
+        Assert.That(matrix[j, i].Color, Is.EqualTo(expectedColoredMatrix[i, j]));
   }
+
+  [Test]
+  public void GivenA3by3Matrix_WhenMovingItUp_ThenLastRowMustBeTheSameAsThePreLastOne()
+  {
+    var width = 3;
+    var height = 3;
+    var initialColoredMatrix = new[,]
+    {
+      { Colors.RED, Colors.RED, Colors.RED },
+      { Colors.GREEN, Colors.GREEN, Colors.GREEN },
+      { Colors.BLUE ,Colors.BLUE, Colors.BLUE }
+    };
+
+    var expectedColoredMatrix = new[,]
+    {
+      { Colors.GREEN, Colors.GREEN, Colors.GREEN },
+      { Colors.BLUE, Colors.BLUE, Colors.BLUE },
+      { Colors.BLUE, Colors.BLUE, Colors.BLUE },
+    };
+
+    var matrix = new MatrixBoard(width, height);
+    matrix.AssignColorsToLeds(initialColoredMatrix);
+
+    var service = new LedMatrixService(matrix);
+    service.BlackOutAfterMoving = false;
+    service.MoveUp();
+
+    for (var i = 0; i < width; i++)
+      for (var j = 0; j < height; j++)
+        Assert.That(matrix[j, i].Color, Is.EqualTo(expectedColoredMatrix[i, j]));
+  }
+
+  [Test]
+  public void GivenA3by3Matrix_WhenMovingItDown_ThenFirstRowMustBeBlackedOut()
+  {
+    var width = 3;
+    var height = 3;
+    var initialColoredMatrix = new[,]
+    {
+      { Colors.RED, Colors.RED, Colors.RED },
+      { Colors.GREEN, Colors.GREEN, Colors.GREEN },
+      { Colors.BLUE ,Colors.BLUE, Colors.BLUE }
+    };
+
+    var expectedColoredMatrix = new[,]
+    {
+      { Colors.BLACK, Colors.BLACK, Colors.BLACK },
+      { Colors.RED, Colors.RED, Colors.RED },
+      { Colors.GREEN, Colors.GREEN, Colors.GREEN }
+    };
+
+    var matrix = new MatrixBoard(width, height);
+    matrix.AssignColorsToLeds(initialColoredMatrix);
+
+    var service = new LedMatrixService(matrix);
+    service.BlackOutAfterMoving = true;
+    service.MoveDown();
+
+    for (var i = 0; i < width; i++)
+      for (var j = 0; j < height; j++)
+        Assert.That(matrix[j, i].Color, Is.EqualTo(expectedColoredMatrix[i, j]));
+  }
+
+  [Test]
+  public void GivenA3by3Matrix_WhenMovingItToTheRight_ThenFirstColumnMustBlackedOut()
+  {
+    var width = 3;
+    var height = 3;
+    var initialColoredMatrix = new[,]
+    {
+      { Colors.RED, Colors.GREEN, Colors.BLUE },
+      { Colors.RED, Colors.GREEN, Colors.BLUE },
+      { Colors.RED, Colors.GREEN, Colors.BLUE }
+    };
+
+    var expectedColoredMatrix = new[,]
+    {
+      { Colors.BLACK, Colors.RED, Colors.GREEN},
+      { Colors.BLACK, Colors.RED, Colors.GREEN},
+      { Colors.BLACK, Colors.RED, Colors.GREEN}
+    };
+
+    var matrix = new MatrixBoard(width, height);
+    matrix.AssignColorsToLeds(initialColoredMatrix);
+
+    var service = new LedMatrixService(matrix);
+    service.BlackOutAfterMoving = true;
+    service.MoveToTheRigth();
+
+    for (var i = 0; i < width; i++)
+      for (var j = 0; j < height; j++)
+        Assert.That(matrix[j, i].Color, Is.EqualTo(expectedColoredMatrix[i, j]));
+  }
+
+  [Test]
+  public void GivenA3by3Matrix_WhenMovingItToTheLeft_ThenLastColumnMustBlackedOut()
+  {
+    var width = 3;
+    var height = 3;
+    var initialColoredMatrix = new[,]
+    {
+      { Colors.RED, Colors.GREEN, Colors.BLUE },
+      { Colors.RED, Colors.GREEN, Colors.BLUE },
+      { Colors.RED, Colors.GREEN, Colors.BLUE }
+    };
+
+    var expectedColoredMatrix = new[,]
+    {
+      { Colors.GREEN, Colors.BLUE, Colors.BLACK },
+      { Colors.GREEN, Colors.BLUE, Colors.BLACK },
+      { Colors.GREEN, Colors.BLUE, Colors.BLACK }
+    };
+
+    var matrix = new MatrixBoard(width, height);
+    matrix.AssignColorsToLeds(initialColoredMatrix);
+
+    var service = new LedMatrixService(matrix);
+    service.BlackOutAfterMoving = true;
+    service.MoveToTheLeft();
+
+    for (var i = 0; i < width; i++)
+      for (var j = 0; j < height; j++)
+        Assert.That(matrix[j, i].Color, Is.EqualTo(expectedColoredMatrix[i, j]));
+  }
+
 }

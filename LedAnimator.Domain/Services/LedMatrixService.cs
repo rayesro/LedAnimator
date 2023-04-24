@@ -16,44 +16,55 @@ public class LedMatrixService
   public void MoveUp()
   {
     for (int y = 0; y < _ledMatrix.MatrixHeight - 1; y++)
-    {
       for (int x = 0; x < _ledMatrix.MatrixWidth; x++)
-      {
-        _ledMatrix.Leds[x, y] = _ledMatrix.Leds[x, y + 1];
-      }
-    }
+        _ledMatrix.Leds[x, y].Color = _ledMatrix.Leds[x, y + 1].Color;
+
     if (!BlackOutAfterMoving)
       return;
 
     for (int x = 0; x < _ledMatrix.MatrixWidth; x++)
-    {
       _ledMatrix.Leds[x, _ledMatrix.MatrixHeight - 1].BlackOut();
-    }
   }
 
   public void MoveDown()
   {
-    for (int y = 0; y < _ledMatrix.MatrixHeight - 1; y++)
-    {
-      for (int x = 0; x < _ledMatrix.MatrixWidth; x++)
-      {
-        _ledMatrix.Leds[x, y] = _ledMatrix.Leds[x, y + 1];
-      }
-    }
     for (int y = _ledMatrix.MatrixHeight - 1; y > 0; y--)
-    {
       for (int x = 0; x < _ledMatrix.MatrixWidth; x++)
-      {
-        _ledMatrix.Leds[x, y] = _ledMatrix.Leds[x, y + 1];
-      }
-    }
+        _ledMatrix.Leds[x, y].Color = _ledMatrix.Leds[x, y - 1].Color;
 
     if (!BlackOutAfterMoving)
       return;
 
     for (int x = 0; x < _ledMatrix.MatrixWidth; x++)
-    {
       _ledMatrix.Leds[x, 0].BlackOut();
-    }
+  }
+
+  //// TODO Test this
+  public void MoveToTheRigth()
+  {
+    for (int x = _ledMatrix.MatrixWidth-2; x > 0; x--)
+      for (int y = 0; y < _ledMatrix.MatrixHeight; y++)
+        _ledMatrix.Leds[x, y].Color = _ledMatrix.Leds[x - 1, y].Color;
+
+    if (!BlackOutAfterMoving)
+      return;
+
+    for (int y = 0; y < _ledMatrix.MatrixHeight; y++)
+      _ledMatrix.Leds[0, y].BlackOut();
+  }
+
+  //// TODO Test this
+
+  public void MoveToTheLeft()
+  {
+    for (int x = 0; x < _ledMatrix.MatrixWidth - 1; x++)
+      for (int y = 0; y < _ledMatrix.MatrixHeight; y++)
+        _ledMatrix.Leds[x, y].Color = _ledMatrix.Leds[x + 1, y].Color;
+
+    if (!BlackOutAfterMoving)
+      return;
+
+    for (int y = 0; y < _ledMatrix.MatrixHeight; y++)
+      _ledMatrix.Leds[_ledMatrix.MatrixWidth-1, y].BlackOut();
   }
 }

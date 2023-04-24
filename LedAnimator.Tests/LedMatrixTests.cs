@@ -1,5 +1,7 @@
 ﻿using LedAnimator.Core.Domain.Aggregates;
 using LedAnimator.Core.Domain.Exceptions;
+using LedAnimator.Core.Domain.Services;
+using LedAnimator.Shared;
 
 namespace LedAnimator.Tests;
 
@@ -136,6 +138,92 @@ public class LedMatrixTests
     matrix.AssignIndexToLeds(indices);
 
     Assert.Throws<CoordsOutOfBoundsException>(() => { var sm = matrix[xCoordParam, yCoordParam]; }) ;
+  }
+
+  [Test]
+  public void GivenA3by3Matrix_WhenGettingALedByIndex_ThenLedInMatrixMustHaveTheAssignedColor()
+  {
+    var width = 3;
+    var height = 3;
+    var indices = new int[,]
+    {
+      { 1, 2, 3 },
+      { 4, 5, 6 },
+      { 7, 8, 9 },
+    };
+
+    var matrix = new MatrixBoard(width, height);
+    for (int i = 0; i < height; i++)
+      for (int j = 0; j < width; j++)
+        matrix[j, i].Color = i switch
+        {
+          0 => Colors.RED,
+          1 => Colors.GREEN,
+          2 => Colors.BLUE,
+          _ => throw new NotImplementedException()
+        };
+
+    matrix.AssignIndexToLeds(indices);
+
+    Assert.That(matrix[0, 0].Color, Is.EqualTo(Colors.RED));
+    Assert.That(matrix.GetLedByIndex(1).Color, Is.EqualTo(Colors.RED));
+
+    Assert.That(matrix[1, 0].Color, Is.EqualTo(Colors.RED));
+    Assert.That(matrix.GetLedByIndex(2).Color, Is.EqualTo(Colors.RED));
+
+    Assert.That(matrix[2, 0].Color, Is.EqualTo(Colors.RED));
+    Assert.That(matrix.GetLedByIndex(3).Color, Is.EqualTo(Colors.RED));
+
+
+    Assert.That(matrix[0, 1].Color, Is.EqualTo(Colors.GREEN));
+    Assert.That(matrix.GetLedByIndex(4).Color, Is.EqualTo(Colors.GREEN));
+
+    Assert.That(matrix[1, 1].Color, Is.EqualTo(Colors.GREEN));
+    Assert.That(matrix.GetLedByIndex(5).Color, Is.EqualTo(Colors.GREEN));
+
+    Assert.That(matrix[2, 1].Color, Is.EqualTo(Colors.GREEN));
+    Assert.That(matrix.GetLedByIndex(6).Color, Is.EqualTo(Colors.GREEN));
+
+
+    Assert.That(matrix[0, 2].Color, Is.EqualTo(Colors.BLUE));
+    Assert.That(matrix.GetLedByIndex(7).Color, Is.EqualTo(Colors.BLUE));
+
+    Assert.That(matrix[1, 2].Color, Is.EqualTo(Colors.BLUE));
+    Assert.That(matrix.GetLedByIndex(8).Color, Is.EqualTo(Colors.BLUE));
+
+    Assert.That(matrix[2, 2].Color, Is.EqualTo(Colors.BLUE));
+    Assert.That(matrix.GetLedByIndex(9).Color, Is.EqualTo(Colors.BLUE));
+  }
+
+  [Test]
+  public void GivenA3by3Matrix_WhenAssigningA2b2ColorMatrix_ThenColorsMustMatchByXandYCoords()
+  {
+    var width = 3;
+    var height = 3;
+
+    var expectedColors = new[,]
+    {
+      { Colors.BLACK, Colors.RED, Colors.GREEN },
+      { Colors.BLACK, Colors.RED, Colors.GREEN },
+      { Colors.BLACK, Colors.RED, Colors.GREEN }
+    };
+
+    var matrix = new MatrixBoard(width, height);
+    matrix.AssignColorsToLeds(expectedColors);
+
+   Assert.That(matrix[0, 0].Color, Is.EqualTo(expectedColors[0, 0]));
+   Assert.That(matrix[1, 0].Color, Is.EqualTo(expectedColors[0, 1]));
+   Assert.That(matrix[2, 0].Color, Is.EqualTo(expectedColors[0, 2]));
+
+  Assert.That(matrix[0, 1].Color, Is.EqualTo(expectedColors[1, 0]));
+  Assert.That(matrix[1, 1].Color, Is.EqualTo(expectedColors[1, 1]));
+  Assert.That(matrix[2, 1].Color, Is.EqualTo(expectedColors[1, 2]));
+
+  Assert.That(matrix[0, 2].Color, Is.EqualTo(expectedColors[2, 0]));
+  Assert.That(matrix[1, 2].Color, Is.EqualTo(expectedColors[2, 1]));
+  Assert.That(matrix[2, 2].Color, Is.EqualTo(expectedColors[2, 2]));
+
+
   }
 
 }

@@ -39,14 +39,41 @@ public class MatrixBoard
     return Leds[xCoordParam, yCoordParam];
   }
   public void AssignIndexToLeds(int[,] indexArrayParam)
-	{
-		if (indexArrayParam == null)
-			throw new NullOrEmptyIndexArrayForLedMatrixException();
-		if (indexArrayParam.Length != MatrixHeight * MatrixWidth)
-			throw new MismatchIndexArrayLengthException();
+  {
+    if (indexArrayParam == null)
+      throw new NullOrEmptyIndexArrayForLedMatrixException();
+    if (indexArrayParam.Length != MatrixHeight * MatrixWidth)
+      throw new MismatchIndexArrayLengthException();
 
-		for (int i = 0; i < MatrixWidth; i++)
-			for (int j = 0; j < MatrixHeight; j++)
-        Leds[j,i].BoardIndex = indexArrayParam[i, j];
-	}
+    for (int i = 0; i < MatrixWidth; i++)
+      for (int j = 0; j < MatrixHeight; j++)
+        Leds[j, i].BoardIndex = indexArrayParam[i, j];
+  }
+
+  public void AssignColorsToLeds(RGBColor[,] colorsArrayParam)
+  {
+    if (colorsArrayParam == null)
+      throw new NullOrEmptyColorArrayForLedMatrixException();
+    if (colorsArrayParam.Length != MatrixHeight * MatrixWidth)
+      throw new MismatchColorArrayLengthException();
+
+    for (int i = 0; i < MatrixWidth; i++)
+      for (int j = 0; j < MatrixHeight; j++)
+        Leds[j, i].Color = colorsArrayParam[i, j];
+  }
+
+  public LedInMatrix? GetLedByIndex(int indexParam)
+  {
+    LedInMatrix? led = null;
+    for (int i = 0;i < MatrixWidth;i++)
+      for (int j = 0;j < MatrixHeight;j++)
+      {
+        if (Leds[i, j].BoardIndex != indexParam)
+          continue;
+        led = Leds[i, j];
+        break;
+      }
+    return led;
+  }
+
 }
