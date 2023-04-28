@@ -1,19 +1,29 @@
 ﻿using LedAnimator.Core.Domain.Aggregates;
+using System.Reflection.Emit;
 
 namespace LedAnimator.Core.Domain.Services;
 
 public class LayerManagerService
 {
-  private List<FrameLayer> _layers = new List<FrameLayer>();
+  private List<Layer> _layers;
+  public int MatrixWidth { get; init; }
+  public int MatrixHeight { get; init; }
+
+  public LayerManagerService()
+  {
+    _layers= new List<Layer>();
+  }
+
+  public List<Layer> Layers { get { return _layers; } }
   private int _layerIds = 0; 
 
   public void CreateNewLayer(MatrixBoard matrixBoardParam)
   {
-    FrameLayer layer = new FrameLayer()
+    Layer layer = new Layer()
     {
       Id = _layerIds,
       IsVisible = true,
-      Layer = matrixBoardParam,
+      Matrix = matrixBoardParam,
       Order = _layerIds
     };
     _layers.Add(layer);
@@ -29,7 +39,7 @@ public class LayerManagerService
     }
   }
 
-  public void SendToBack(FrameLayer layerParam)
+  public void SendToBack(Layer layerParam)
   {
     _layers = _layers.OrderBy(x => x.Order).ToList();
     var index = _layers.IndexOf(layerParam);
@@ -44,7 +54,7 @@ public class LayerManagerService
 
   }
 
-  public void SendBackward(FrameLayer layerParam)
+  public void SendBackward(Layer layerParam)
   {
     _layers = _layers.OrderBy(x => x.Order).ToList();
     var index = _layers.IndexOf(layerParam);
@@ -58,7 +68,7 @@ public class LayerManagerService
     _layers[0].Order = order;
   }
 
-  public void BringToFront(FrameLayer layerParam)
+  public void BringToFront(Layer layerParam)
   {
     _layers = _layers.OrderBy(x => x.Order).ToList();
     var index = _layers.IndexOf(layerParam);
@@ -72,7 +82,7 @@ public class LayerManagerService
     _layers[index + 1].Order = order;
   }
 
-  public void BringFrontward(FrameLayer layerParam)
+  public void BringFrontward(Layer layerParam)
   {
     _layers = _layers.OrderBy(x => x.Order).ToList();
     var index = _layers.IndexOf(layerParam);
@@ -85,5 +95,7 @@ public class LayerManagerService
     layerParam.Order = _layers[_layers.Count - 1].Order;
     _layers[_layers.Count - 1].Order = order;
   }
+
+  
 
 }

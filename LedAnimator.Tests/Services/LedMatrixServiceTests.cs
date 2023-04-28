@@ -28,7 +28,7 @@ public class LedMatrixServiceTests
     var matrix = new MatrixBoard(width, height);
     matrix.AssignColorsToLeds(initialColoredMatrix);
 
-    var service = new LedMatrixService(matrix);
+    var service = new MatrixPaintingService(matrix);
     service.BlackOutAfterMoving = true;
     service.MoveUp();
 
@@ -60,7 +60,7 @@ public class LedMatrixServiceTests
     var matrix = new MatrixBoard(width, height, customColor);
     matrix.AssignColorsToLeds(initialColoredMatrix);
 
-    var service = new LedMatrixService(matrix);
+    var service = new MatrixPaintingService(matrix);
     service.BlackOutAfterMoving = true;
     service.MoveUp();
 
@@ -91,7 +91,7 @@ public class LedMatrixServiceTests
     var matrix = new MatrixBoard(width, height);
     matrix.AssignColorsToLeds(initialColoredMatrix);
 
-    var service = new LedMatrixService(matrix);
+    var service = new MatrixPaintingService(matrix);
     service.BlackOutAfterMoving = false;
     service.MoveUp();
 
@@ -122,7 +122,7 @@ public class LedMatrixServiceTests
     var matrix = new MatrixBoard(width, height);
     matrix.AssignColorsToLeds(initialColoredMatrix);
 
-    var service = new LedMatrixService(matrix);
+    var service = new MatrixPaintingService(matrix);
     service.BlackOutAfterMoving = true;
     service.MoveDown();
 
@@ -153,7 +153,7 @@ public class LedMatrixServiceTests
     var matrix = new MatrixBoard(width, height);
     matrix.AssignColorsToLeds(initialColoredMatrix);
 
-    var service = new LedMatrixService(matrix);
+    var service = new MatrixPaintingService(matrix);
     service.BlackOutAfterMoving = true;
     service.MoveToTheRigth();
 
@@ -184,7 +184,7 @@ public class LedMatrixServiceTests
     var matrix = new MatrixBoard(width, height);
     matrix.AssignColorsToLeds(initialColoredMatrix);
 
-    var service = new LedMatrixService(matrix);
+    var service = new MatrixPaintingService(matrix);
     service.BlackOutAfterMoving = true;
     service.MoveToTheLeft();
 
@@ -215,7 +215,7 @@ public class LedMatrixServiceTests
     var matrix = new MatrixBoard(width, height);
     matrix.AssignColorsToLeds(initialColoredMatrix);
 
-    var service = new LedMatrixService(matrix);
+    var service = new MatrixPaintingService(matrix);
     service.BlackOutAfterMoving = true;
     service.MoveUpLeft();
 
@@ -246,7 +246,7 @@ public class LedMatrixServiceTests
     var matrix = new MatrixBoard(width, height);
     matrix.AssignColorsToLeds(initialColoredMatrix);
 
-    var service = new LedMatrixService(matrix);
+    var service = new MatrixPaintingService(matrix);
     service.BlackOutAfterMoving = true;
     service.MoveUpRight();
 
@@ -277,7 +277,7 @@ public class LedMatrixServiceTests
     var matrix = new MatrixBoard(width, height);
     matrix.AssignColorsToLeds(initialColoredMatrix);
 
-    var service = new LedMatrixService(matrix);
+    var service = new MatrixPaintingService(matrix);
     service.BlackOutAfterMoving = true;
     service.MoveDownLeft();
 
@@ -308,7 +308,7 @@ public class LedMatrixServiceTests
     var matrix = new MatrixBoard(width, height);
     matrix.AssignColorsToLeds(initialColoredMatrix);
 
-    var service = new LedMatrixService(matrix);
+    var service = new MatrixPaintingService(matrix);
     service.BlackOutAfterMoving = true;
     service.MoveDownRight();
 
