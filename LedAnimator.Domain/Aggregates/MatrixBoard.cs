@@ -1,19 +1,30 @@
 ﻿using LedAnimator.Core.Domain.Exceptions;
 using LedAnimator.Shared;
+using System.Drawing;
 
 namespace LedAnimator.Core.Domain.Aggregates;
 
 public class MatrixBoard
 {
-	public LedInMatrix[,] Leds { get; set; }
-	public int MatrixWidth { get; init; }
-	public int MatrixHeight { get; init; }
+  public LedInMatrix[,] Leds { get; set; }
+  public int MatrixWidth { get; init; }
+  public int MatrixHeight { get; init; }
+  public RGBColor BlackoutColor { get; set; }
 
-  public MatrixBoard(int matrixWidthParam, int matrixHeightParam, RGBColor? blackoutColorParam = null )
+  public MatrixBoard()
+  {
+
+  }
+
+  public MatrixBoard(int matrixWidthParam, int matrixHeightParam, RGBColor? blackoutColorParam = null)
   {
     MatrixWidth = matrixWidthParam;
     MatrixHeight = matrixHeightParam;
     Leds = new LedInMatrix[MatrixWidth, MatrixHeight];
+    if (blackoutColorParam == null)
+      BlackoutColor = Colors.BLACK;
+    else
+      BlackoutColor = blackoutColorParam;
 
     //from bottom rigth as a cartisian axis
     for (int y = MatrixHeight - 1; y >= 0; y--)
@@ -25,11 +36,11 @@ public class MatrixBoard
       }
   }
 
-	public LedInMatrix this[int x, int y]
-	{
-		get { return GetLedByCoords(x, y); }
-		set { Leds[x, y] = value; }
-	}
+  public LedInMatrix this[int x, int y]
+  {
+    get { return GetLedByCoords(x, y); }
+    set { Leds[x, y] = value; }
+  }
 
   public int GetIndexByCoords(int xCoordParam, int yCoordParam)
   {
@@ -71,8 +82,8 @@ public class MatrixBoard
   public LedInMatrix? GetLedByIndex(int indexParam)
   {
     LedInMatrix? led = null;
-    for (int i = 0;i < MatrixWidth;i++)
-      for (int j = 0;j < MatrixHeight;j++)
+    for (int i = 0; i < MatrixWidth; i++)
+      for (int j = 0; j < MatrixHeight; j++)
       {
         if (Leds[i, j].BoardIndex != indexParam)
           continue;
@@ -80,6 +91,11 @@ public class MatrixBoard
         break;
       }
     return led;
+  }
+
+  public void BlackOutLed(int xParam, int yParam)
+  {
+    Leds[xParam, yParam].Color = BlackoutColor;
   }
 
 }
