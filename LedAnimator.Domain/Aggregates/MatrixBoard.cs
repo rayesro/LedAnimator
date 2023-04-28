@@ -14,9 +14,15 @@ public class MatrixBoard
     MatrixWidth = matrixWidthParam;
     MatrixHeight = matrixHeightParam;
     Leds = new LedInMatrix[MatrixWidth, MatrixHeight];
-    for (int i = 0; i < MatrixWidth; i++)
-      for (int j = 0; j < MatrixHeight; j++)
-        Leds[i, j] = new LedInMatrix(blackoutColorParam);
+
+    //from bottom rigth as a cartisian axis
+    for (int y = MatrixHeight - 1; y >= 0; y--)
+      for (int x = 0; x < MatrixWidth; x++)
+      {
+        Leds[y, x] = new LedInMatrix(blackoutColorParam);
+        Leds[y, x].XCoord = x;
+        Leds[y, x].YCoord = MatrixHeight - 1 - y;
+      }
   }
 
 	public LedInMatrix this[int x, int y]
