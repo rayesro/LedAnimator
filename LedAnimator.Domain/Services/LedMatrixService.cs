@@ -88,6 +88,4 @@ public class LedMatrixService
     MoveDown();
     MoveToTheRigth();
   }
-
-
 }
