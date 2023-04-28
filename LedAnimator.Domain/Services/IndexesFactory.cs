@@ -10,19 +10,8 @@ public static class IndexesFactory
     {
       for (int j = 0; j < widthParam; j++)
       {
-        int x, y;
-        if (i % 2 == 0)
-        {
-          x = j;
-          y = heightParam - 1 - i;
-          
-        }
-        else
-        {
-          x = widthParam - 1 - j;
-          y = heightParam - 1 - i;
-        }
-
+        int x = i % 2 == 0 ? j : widthParam - 1 - j;
+        int y = heightParam - 1 - i;
         indexes[x, y] = count++;
       }
     }
